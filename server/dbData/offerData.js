@@ -11,7 +11,9 @@ const offers = [
         frequency: 'Once', 
         skillsReq: false, 
         likes: 31, 
-        dislikes: 17 
+        dislikes: 17,
+        part: 3,
+        partMax: 20  
     },
     { 
         uid: 2, 
@@ -25,7 +27,9 @@ const offers = [
         frequency: 'Once', 
         skillsReq: false, 
         likes: 0, 
-        dislikes: 9 
+        dislikes: 9,
+        part: 0,
+        partMax: 2  
     },
     { 
         uid: 3, 
@@ -39,7 +43,9 @@ const offers = [
         frequency: 'Weekly', 
         skillsReq: false, 
         likes: 32, 
-        dislikes: 11 
+        dislikes: 11,
+        part: 9,
+        partMax: 10  
     },
     { 
         uid: 1, 
@@ -53,7 +59,9 @@ const offers = [
         frequency: 'Once', 
         skillsReq: true, 
         likes: 1, 
-        dislikes: 2 
+        dislikes: 2,
+        part: 0,
+        partMax: 1  
     },
     { 
         uid: 2, 
@@ -67,7 +75,9 @@ const offers = [
         frequency: 'Once', 
         skillsReq: true, 
         likes: 5, 
-        dislikes: 2 
+        dislikes: 2,
+        part: 0,
+        partMax: 1  
     }
 ];
 

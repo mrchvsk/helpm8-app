@@ -22,7 +22,7 @@ export default function OfferCarousel() {
             <div className="carousel carousel-center w-full p-9 space-x-9">
                 {backendData.map((offer) => (
                     <div key={offer.id} className="carousel-item">
-                        <Card title={offer.title} desc={offer.description} participants={offer.participants} participantsMax={offer.participantsMax} />
+                        <Card title={offer.title} desc={offer.description} participants={offer.part} participantsMax={offer.partMax} />
                     </div>
                 ))}
             </div>
