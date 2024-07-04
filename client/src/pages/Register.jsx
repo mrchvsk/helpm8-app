@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Register() {
     const [selectedCountry, setSelectedCountry] = useState('');
@@ -14,6 +14,7 @@ export default function Register() {
     });
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const countryCityMap = {
         Germany: ['Berlin', 'Munich', 'Frankfurt'],
@@ -36,8 +37,8 @@ export default function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setShowError(false); 
-        setShowSuccess(false); 
+        setShowError(false);
+        setShowSuccess(false);
 
         fetch('/register', {
             method: 'POST',
@@ -49,9 +50,9 @@ export default function Register() {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    setShowError(true); 
+                    setShowError(true);
                 } else {
-                    setShowSuccess(true); 
+                    setShowSuccess(true);
                     setFormData({
                         name: '',
                         surname: '',
@@ -66,9 +67,15 @@ export default function Register() {
                 }
             })
             .catch((error) => {
-                setShowError(true); 
+                setShowError(true);
             });
     };
+
+    useEffect(() => {
+        // Validate the form
+        const isValid = Object.values(formData).every(field => field.trim() !== '') && formData.password === formData.repeatPassword;
+        setIsFormValid(isValid);
+    }, [formData]);
 
     return (
         <div className="flex justify-center h-dvh">
@@ -89,11 +96,11 @@ export default function Register() {
                 <h1 className="text-3xl font-bold">Register an account</h1>
 
                 <div className="flex flex-col md:flex-row gap-4 w-full">
-                    <label className="input input-bordered flex items-center gap-2 grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         Name
-                        <input type="text" name="name" className="grow lg:w-1/2" placeholder="Enter your first name" value={formData.name} onChange={handleChange} />
+                        <input type="text" name="name" className="grow" placeholder="Enter your first name" value={formData.name} onChange={handleChange} />
                     </label>
-                    <label className="input input-bordered flex items-center gap-2 lg:w-1/2 grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         Surname
                         <input type="text" name="surname" className="grow" placeholder="Enter your family name" value={formData.surname} onChange={handleChange} />
                     </label>
@@ -105,10 +112,10 @@ export default function Register() {
                 </label>
 
                 <div className="flex flex-col md:flex-row gap-4 w-full">
-                    <label className="input input-bordered flex items-center grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         Country
                         <select className="select select-ghost grow" value={selectedCountry} onChange={handleCountryChange}>
-                            <option disabled selected>Where are you from?</option>
+                            <option value="" disabled selected>Where are you from?</option>
                             <option value="Germany">Germany</option>
                             <option value="Bulgaria">Bulgaria</option>
                             <option value="Cameroon">Cameroon</option>
@@ -116,10 +123,10 @@ export default function Register() {
                         </select>
                     </label>
 
-                    <label className="input input-bordered flex items-center grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         City
                         <select className="select select-ghost grow" name="city" value={formData.city} onChange={handleChange}>
-                            <option disabled selected>Select your city</option>
+                            <option value="" disabled selected>Select your city</option>
                             {cities.map((city) => (
                                 <option key={city} value={city}>{city}</option>
                             ))}
@@ -128,17 +135,17 @@ export default function Register() {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-4 w-full">
-                    <label className="input input-bordered flex gap-2 items-center grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         Password
                         <input type="password" name="password" className="grow" placeholder="Enter your password" value={formData.password} onChange={handleChange} />
                     </label>
-                    <label className="input input-bordered flex gap-2 items-center grow">
+                    <label className="input input-bordered flex items-center gap-2 grow md:flex-1">
                         Repeat password
                         <input type="password" name="repeatPassword" className="grow" placeholder="Repeat your password" value={formData.repeatPassword} onChange={handleChange} />
                     </label>
                 </div>
 
-                <button type="submit" className="btn bg-primary w-full md:w-32 m-auto">Register me</button>
+                <button type="submit" className="btn bg-primary w-full md:w-32 m-auto" disabled={!isFormValid}>Register me</button>
             </form>
         </div>
     )

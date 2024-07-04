@@ -35,7 +35,7 @@ connection.connect((err) => {
                 }
                 console.log('Using database helpm8');
             });
-        //if the db does not exist
+            //if the db does not exist
         } else {
             setup();
         }
@@ -44,15 +44,13 @@ connection.connect((err) => {
 
 function setup() {
     const createDb = `CREATE DATABASE helpm8`;
-    connection.query(createDb, (err, results) => {
+    connection.query(createDb, (err) => {
         if (err) {
-            res.send('Error creating database');
             return;
         }
 
         connection.changeUser({ database: 'helpm8' }, (err) => {
             if (err) {
-                res.send('Error using database');
                 return;
             }
 
@@ -69,7 +67,7 @@ function setup() {
                     joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             `;
-            connection.query(createUser, (err, results) => {
+            connection.query(createUser, (err) => {
                 if (err) {
                     console.error('Error creating table:', err);
                     return;
@@ -98,7 +96,7 @@ function setup() {
                 FOREIGN KEY (uid) REFERENCES user(uid)
                 );
             `;
-            connection.query(createOffer, (err, results) => {
+            connection.query(createOffer, (err) => {
                 if (err) {
                     console.error('Error creating table:', err);
                     return;
@@ -109,9 +107,8 @@ function setup() {
             const users = require('./dbData/userData');
             const insertUser = `INSERT INTO user (firstName, lastName, email, country, city, password) VALUES ?`;
             const userValues = users.map(user => [user.firstName, user.lastName, user.email, user.country, user.city, user.password]);
-            connection.query(insertUser, [userValues], (err, result) => {
+            connection.query(insertUser, [userValues], (err) => {
                 if (err) {
-                    res.send('Error inserting user data');
                     return;
                 }
             });
@@ -120,29 +117,24 @@ function setup() {
             const offers = require('./dbData/offerData');
             const insertOffer = `INSERT INTO offer (uid, title, description, category, country, city, date, budget, frequency, skillsReq, likes, dislikes, part, partMax) VALUES ?`;
             const offerValues = offers.map(offer => [offer.uid, offer.title, offer.description, offer.category, offer.country, offer.city, offer.date, offer.budget, offer.frequency, offer.skillsReq, offer.likes, offer.dislikes, offer.part, offer.partMax]);
-            connection.query(insertOffer, [offerValues], (err, result) => {
+            connection.query(insertOffer, [offerValues], (err) => {
                 if (err) {
-                    res.send('Error inserting offer data');
                     return;
                 }
             });
-
-            res.send('Successfully created functional database');
         });
     });
 }
 
 app.get('/setup', (req, res) => {
     const createDb = `CREATE DATABASE helpm8`;
-    connection.query(createDb, (err, results) => {
+    connection.query(createDb, (err) => {
         if (err) {
-            res.send('Error creating database');
             return;
         }
 
         connection.changeUser({ database: 'helpm8' }, (err) => {
             if (err) {
-                res.send('Error using database');
                 return;
             }
 
@@ -159,7 +151,7 @@ app.get('/setup', (req, res) => {
                     joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             `;
-            connection.query(createUser, (err, results) => {
+            connection.query(createUser, (err) => {
                 if (err) {
                     console.error('Error creating table:', err);
                     return;
@@ -188,7 +180,7 @@ app.get('/setup', (req, res) => {
                 FOREIGN KEY (uid) REFERENCES user(uid)
                 );
             `;
-            connection.query(createOffer, (err, results) => {
+            connection.query(createOffer, (err) => {
                 if (err) {
                     console.error('Error creating table:', err);
                     return;
@@ -242,7 +234,7 @@ app.get('/users', (req, res) => {
 
 //sepcific user fetching
 app.get('/users/:id', (req, res) => {
-    const id = req.params.id; 
+    const id = req.params.id;
 
     connection.connect(function (err) {
         if (err) { throw err; }
@@ -258,27 +250,6 @@ app.get('/users/:id', (req, res) => {
     });
 });
 
-//might create problems
-/*
-app.get('/users/:username', (req, res) => {
-    const username = req.params.username;
-
-    connection.connect(function (err) {
-        if (err) {
-            throw err;
-        }
-
-        const sql = "SELECT * FROM Users WHERE username = ?";
-        connection.query(sql, [username], function (err, result) {
-            if (err) {
-                throw err;
-            }
-
-            res.json(result);
-        });
-    });
-});
-*/
 
 app.post('/register', (req, res) => {
     const { name, surname, email, country, city, password } = req.body;
