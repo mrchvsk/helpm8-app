@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 //used to connect when db exists
 connection.connect((err) => {
     if (err) {
-        console.log('Error connecting to MySQL Workbench:', err);
+        console.log('Error connecting mysql', err);
         return;
     }
 
@@ -30,10 +30,9 @@ connection.connect((err) => {
         if (results.length > 0) {
             connection.changeUser({ database: 'helpm8' }, (err) => {
                 if (err) {
-                    console.error('Error using db helpm8:', err);
+                    console.error('Error using helpm8:', err);
                     return;
                 }
-                console.log('Using database helpm8');
             });
             //if the db does not exist
         } else {
@@ -126,94 +125,6 @@ function setup() {
     });
 }
 
-app.get('/setup', (req, res) => {
-    const createDb = `CREATE DATABASE helpm8`;
-    connection.query(createDb, (err) => {
-        if (err) {
-            return;
-        }
-
-        connection.changeUser({ database: 'helpm8' }, (err) => {
-            if (err) {
-                return;
-            }
-
-            //creating user table
-            const createUser = `
-                CREATE TABLE user (
-                    uid INT AUTO_INCREMENT PRIMARY KEY,
-                    firstName VARCHAR(255),
-                    lastName VARCHAR(255),
-                    email VARCHAR(255),
-                    country VARCHAR(255),
-                    city VARCHAR(255),
-                    password VARCHAR(255),
-                    joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            `;
-            connection.query(createUser, (err) => {
-                if (err) {
-                    console.error('Error creating table:', err);
-                    return;
-                }
-            });
-
-            //creating offer table
-            const createOffer = `
-                CREATE TABLE offer (
-                oid INT AUTO_INCREMENT PRIMARY KEY,
-                uid INT,
-                title VARCHAR(255),
-                description TEXT,
-                category VARCHAR(255),
-                country VARCHAR(100),
-                city VARCHAR(100),
-                date DATE,
-                budget INT,
-                frequency VARCHAR(30),
-                skillsReq BOOLEAN,
-                likes INT,
-                dislikes INT,
-                part INT,
-                partMax INT,
-                created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (uid) REFERENCES user(uid)
-                );
-            `;
-            connection.query(createOffer, (err) => {
-                if (err) {
-                    console.error('Error creating table:', err);
-                    return;
-                }
-            });
-
-            //populating user table
-            const users = require('./dbData/userData');
-            const insertUser = `INSERT INTO user (firstName, lastName, email, country, city, password) VALUES ?`;
-            const userValues = users.map(user => [user.firstName, user.lastName, user.email, user.country, user.city, user.password]);
-            connection.query(insertUser, [userValues], (err, result) => {
-                if (err) {
-                    res.send('Error inserting user data');
-                    return;
-                }
-            });
-
-            //populating offer table
-            const offers = require('./dbData/offerData');
-            const insertOffer = `INSERT INTO offer (uid, title, description, category, country, city, date, budget, frequency, skillsReq, likes, dislikes, part, partMax) VALUES ?`;
-            const offerValues = offers.map(offer => [offer.uid, offer.title, offer.description, offer.category, offer.country, offer.city, offer.date, offer.budget, offer.frequency, offer.skillsReq, offer.likes, offer.dislikes, offer.part, offer.partMax]);
-            connection.query(insertOffer, [offerValues], (err, result) => {
-                if (err) {
-                    res.send('Error inserting offer data');
-                    return;
-                }
-            });
-
-            res.send('Successfully created functional database');
-        });
-    });
-});
-
 //all user fetching
 app.get('/users', (req, res) => {
     connection.connect(function (err) {
@@ -250,7 +161,7 @@ app.get('/users/:id', (req, res) => {
     });
 });
 
-
+//registering user
 app.post('/register', (req, res) => {
     const { name, surname, email, country, city, password } = req.body;
     const sql = 'INSERT INTO user (firstname, lastname, email, country, city, password) VALUES (?, ?, ?, ?, ?, ?)';
@@ -262,6 +173,49 @@ app.post('/register', (req, res) => {
         }
     });
 });
+
+//logging user
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    db.query(
+        'SELECT * FROM user WHERE email = ? AND password = ?', [email, password],
+        (results) => {
+            if (results.length > 0) {
+                const user = results[0];
+                const token = jwt.sign({ id: user.id, email: user.email }, '123jbs');
+                res.json({ token });
+            } 
+        }
+    );
+});
+
+app.get('/protected', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'your_jwt_secret', (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            res.json({
+                message: 'Protected Route',
+                authData
+            });
+        }
+    });
+});
+
+// Verify Token Middleware
+function verifyToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+
+    if (typeof bearerHeader !== 'undefined') {
+        const bearerToken = bearerHeader.split(' ')[1];
+        req.token = bearerToken;
+        next();
+    } else {
+        res.sendStatus(403);
+    }
+}
+
 
 
 //all offers fetching

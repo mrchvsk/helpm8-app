@@ -15,6 +15,8 @@ To start working on the project you need to clone the repository from Github.
  # Server Setup
  1. Navigate to the server directory:
   - cd ../server
+  - npm install
+  - npm install express mysql2 cors jsonwebtoken
 
 # Application start
 
