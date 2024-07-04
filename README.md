@@ -1,3 +1,26 @@
 # helpm8
 
-When you successfully have the code in VS Code, you should install the node modules in the server and client sub-folders. To achieve that, open Terminal, navigate to client and execute command npm init. After that you should also install tailwind and daisyui. After using Terminal navigate to server folder and initialise node modules. After that also install express to run the server.
+To start working on the project you need to clone the repository from Github.
+
+# Client Setup
+1. Navigate to the client directory:
+ - cd client
+
+2. Install node modules:
+ - npm install
+
+3. Install Tailwind CSS and DaisyUI:
+ - npm install tailwindcss daisyui
+
+ # Server Setup
+ 1. Navigate to the server directory:
+  - cd ../server
+
+# Application start
+
+1. You need to first start the server-side application. The database will be initialised automatically.
+ - node index.js
+
+2. You can now start the client-side application, as well.
+- cd ../client
+- npm start 
