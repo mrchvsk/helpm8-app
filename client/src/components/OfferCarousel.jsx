@@ -10,9 +10,6 @@ export default function OfferCarousel() {
             .then(data => {
                 setBackendData(data);
             })
-            .catch(error => {
-                console.error("Error fetching offers:", error);
-            });
     }, []);
 
     return (
@@ -21,8 +18,8 @@ export default function OfferCarousel() {
 
             <div className="carousel carousel-center w-full p-9 space-x-9">
                 {backendData.map((offer) => (
-                    <div key={offer.id} className="carousel-item">
-                        <Card title={offer.title} desc={offer.description} participants={offer.part} participantsMax={offer.partMax} />
+                    <div className="carousel-item">
+                        <Card key={offer.id} title={offer.title} desc={offer.description} participants={offer.part} participantsMax={offer.partMax} />
                     </div>
                 ))}
             </div>

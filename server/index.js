@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql2');
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 app.use(express.json());
@@ -27,7 +28,7 @@ connection.connect((err) => {
     connection.query("SHOW DATABASES LIKE 'helpm8'", (err, results) => {
 
         //if db exists
-        if (results.length > 0) {
+        if (results && results.length > 0) {
             connection.changeUser({ database: 'helpm8' }, (err) => {
                 if (err) {
                     console.error('Error using helpm8:', err);
@@ -175,23 +176,24 @@ app.post('/register', (req, res) => {
 });
 
 //logging user
+const jwtSecret = '95c01d95e4021f7a4b08e2a306f6a4e5e6a88d51f7bca30de8131c1b4e084f23';
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    db.query(
-        'SELECT * FROM user WHERE email = ? AND password = ?', [email, password],
-        (results) => {
-            if (results.length > 0) {
+    connection.query(
+        'SELECT * FROM user WHERE email = ? AND password = ?', [email, password], (results) => {
+            if (results && results.length > 0) {
                 const user = results[0];
-                const token = jwt.sign({ id: user.id, email: user.email }, '123jbs');
-                res.json({ token });
+                const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret);
+                res.json({ message: 'Login successful', token, user: { id: user.uid, firstName: user.firstName, lastName: user.lastName, email: user.email }
+                });
             } 
         }
     );
 });
 
 app.get('/protected', verifyToken, (req, res) => {
-    jwt.verify(req.token, 'your_jwt_secret', (err, authData) => {
+    jwt.verify(req.token, jwtSecret, (err, authData) => {
         if (err) {
             res.sendStatus(403);
         } else {
