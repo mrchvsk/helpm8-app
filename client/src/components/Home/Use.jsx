@@ -1,6 +1,6 @@
 export default function Use() {
     return (
-        <div>
+        <div className="max-w-7xl m-auto">
             <h2 className="text-4xl p-9 font-semibold bg-base-200 max-sm:text-center">How does it work</h2>
             <div className="flex flex-col md:flex-row justify-between p-4 md:p-9 bg-base-200 text-center mx-auto w-full">
                 <div className="min-w-72 flex-1 flex flex-col items-center mx-2 my-4 md:my-0">

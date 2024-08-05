@@ -72,13 +72,12 @@ export default function Register() {
     };
 
     useEffect(() => {
-        // Validate the form
         const isValid = Object.values(formData).every(field => field.trim() !== '') && formData.password === formData.repeatPassword;
         setIsFormValid(isValid);
     }, [formData]);
 
     return (
-        <div className="flex justify-center h-dvh">
+        <div className="flex justify-center h-screen">
             <form className="m-auto bg-base-300 w-5/12 min-sm:w-5/6 flex flex-col gap-4 p-4 py-8 rounded-xl items-center shadow" onSubmit={handleSubmit}>
                 {showError && (
                     <div role="alert" className="alert alert-error w-full">

@@ -2,12 +2,10 @@ import logo from '../resources/logo.svg'
 
 export default function Footer() {
     return (
-        <footer className="footer footer-center p-10 bg-base-300 text-primary-content">
+        <footer className="footer footer-center p-10 bg-base-300">
             <aside>
                 <img className='h-14' src={logo} alt="helpm8" />
-                <p className="font-bold">
-                    HelpM8 Project <br />Helping people since forever
-                </p>
+                <p className="font-bold text-primary">Helping people since 2024</p>
                 <p>Copyright © 2024 - All right reserved</p>
             </aside>
             <nav>

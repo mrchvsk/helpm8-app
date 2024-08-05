@@ -2,7 +2,7 @@ import LoginForm from "../LoginForm";
 
 export default function Hero() {
     return ( 
-        <div className="hero min-h-screen bg-base-200">
+        <div className="hero min-h-screen">
             <div className="hero-content lg:gap-16 flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">Your Go-To Platform for <br /> Getting Help</h1>
