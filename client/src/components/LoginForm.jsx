@@ -23,11 +23,8 @@ export default function LoginForm() {
             const data = await response.json();
             const { token } = data;
 
-            // Save token to localStorage or sessionStorage
             localStorage.setItem('token', token);
 
-            // Redirect or navigate to another page upon successful login
-            // Example: history.push('/dashboard');
             console.log('Login successful!');
         } catch (error) {
             console.error('Login error:', error.message);
@@ -42,7 +39,7 @@ export default function LoginForm() {
                 </label>
                 <input
                     type="email"
-                    placeholder="email"
+                    placeholder="email@helpm8.com"
                     className="input input-bordered"
                     required
                     value={email}
@@ -55,7 +52,7 @@ export default function LoginForm() {
                 </label>
                 <input
                     type="password"
-                    placeholder="password"
+                    placeholder="******"
                     className="input input-bordered"
                     required
                     value={password}
@@ -63,7 +60,7 @@ export default function LoginForm() {
                 />
             </div>
             <div className="form-control mt-6">
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary text-white">
                     Login
                 </button>
             </div>

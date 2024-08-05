@@ -21,7 +21,9 @@ export default function Header() {
                 </ul>
             </div>
             <div className="navbar-center absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none">
-                <img className='h-12' src={logo} alt="helpm8" />
+                <a href="/">
+                    <img className='h-12' src={logo} alt="helpm8" />
+                </a>
             </div>
             <div className="flex gap-1 navbar-end">
                 <a href='/register' className="btn">Join now</a>

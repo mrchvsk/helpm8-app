@@ -1,4 +1,4 @@
-export default function Card({ title, desc, participants, participantsMax }) {
+export default function Card({ title = '', desc = '', participants = 0, participantsMax = 100 }) {
     const maxLength = 90;
     const shortenedDesc = desc.length > maxLength ? `${desc.substring(0, maxLength)}...` : desc;
 
@@ -13,5 +13,5 @@ export default function Card({ title, desc, participants, participantsMax }) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

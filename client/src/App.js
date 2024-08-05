@@ -7,6 +7,7 @@ import About from './pages/About';
 import Register from './pages/Register';
 import Offers from './pages/Offers';
 import Footer from './components/Footer';
+import OfferDetails from './pages/OfferDetails';
 
 export default function App() {
     return (
@@ -19,11 +20,14 @@ export default function App() {
                 <Route path="/about" exact>
                     <About />
                 </Route>
-                <Route path="/register" exact>
-                    <Register />
+                <Route path="/register" exact>                    
+                    <Register />                    
                 </Route>
-                <Route path="/offers" exact>
-                    <Offers />
+                <Route path="/offers" exact>                    
+                    <Offers />                    
+                </Route>
+                <Route path="/offers/:id" exact>                    
+                    <OfferDetails />                    
                 </Route>
             </Switch>
             <Footer />
