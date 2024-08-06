@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Offers from './pages/Offers';
 import Footer from './components/Footer';
 import OfferDetails from './pages/OfferDetails';
+import Protected from './pages/Protected';
 
 export default function App() {
     return (
@@ -28,6 +29,9 @@ export default function App() {
                 </Route>
                 <Route path="/offers/:id" exact>                    
                     <OfferDetails />                    
+                </Route>
+                <Route path="/protected" exact>
+                    <Protected />
                 </Route>
             </Switch>
             <Footer />

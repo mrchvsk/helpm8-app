@@ -1,33 +1,33 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'; // Use useHistory for navigation
 
 export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const history = useHistory(); // Initialize useHistory
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password })
             });
-
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-
             const data = await response.json();
-            const { token } = data;
-
-            localStorage.setItem('token', token);
-
-            console.log('Login successful!');
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userFirstName', data.user.firstName); // Store firstName
+                history.push('/protected');
+            } else {
+                alert(data.message || 'Error logging in');
+            }
         } catch (error) {
-            console.error('Login error:', error.message);
+            console.error(error);
+            alert('Error logging in');
         }
     };
 

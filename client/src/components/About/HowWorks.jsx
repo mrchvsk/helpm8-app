@@ -2,13 +2,13 @@ import LoginForm from '../LoginForm'
 
 export default function HowWorks() {
     return (
-        <div className="flex flex-col lg:flex-row gap-4 xl:px-36 lg:p-9 bg-base-100">
+        <div className="flex flex-col lg:flex-row gap-4 xl:px-36 lg:p-9 bg-base-100 h-full">
             {/* Left side */}
             <div className="flex flex-col flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
                 <p className="text-secondary font-semibold text-center lg:text-left">Get Started</p>
                 <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">How does the platform work?</h2>
 
-                <div className="flex flex-col lg:flex-row bg-base-300 rounded-xl">
+                <div className="flex flex-col lg:flex-row bg-base-300 rounded-xl flex-1">
                     <section className="flex-1 p-4 text-justify text-lg">
                         <h2 className="text-xl lg:text-2xl font-semibold mb-4">Explore Offers for Free</h2>
                         <ol className="list-decimal list-inside space-y-4 text-sm">
@@ -39,9 +39,18 @@ export default function HowWorks() {
             </div>
 
             {/* Right side */}
-            <div className="flex flex-col flex-1 bg-base-100">
-                {/* Top side */}
-                <LoginForm />
+            <div className="flex flex-col flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
+                <div className='flex flex-col gap-4 md:flex-row h-full'>
+                    <div className='bg-base-200 rounded-xl flex-1'>
+                        <LoginForm />
+                    </div>
+
+                    <a href="/offers" className='flex-1'>
+                        <div className='bg-base-200 rounded-xl flex items-center justify-center h-full'>
+                            <p className='text-secondary text-5xl font-bold'>Find your offer</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     );

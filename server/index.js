@@ -1,12 +1,18 @@
 const express = require('express');
 const app = express();
+
 const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    methods: 'GET,POST',
+    allowedHeaders: 'Content-Type,Authorization'
+}));
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -176,45 +182,48 @@ app.post('/register', (req, res) => {
 });
 
 //logging user
-const jwtSecret = '95c01d95e4021f7a4b08e2a306f6a4e5e6a88d51f7bca30de8131c1b4e084f23';
+const jwtSecret = 'test123';
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    connection.query(
-        'SELECT * FROM user WHERE email = ? AND password = ?', [email, password], (results) => {
-            if (results && results.length > 0) {
-                const user = results[0];
-                const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret);
-                res.json({ message: 'Login successful', token, user: { id: user.uid, firstName: user.firstName, lastName: user.lastName, email: user.email }
-                });
-            } 
-        }
-    );
-});
-
-app.get('/protected', verifyToken, (req, res) => {
-    jwt.verify(req.token, jwtSecret, (err, authData) => {
+    const sql = 'SELECT * FROM user WHERE email = ? AND password = ?';
+    connection.query(sql, [email, password], (err, results) => {
         if (err) {
-            res.sendStatus(403);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+
+        if (results.length > 0) {
+            const user = results[0];
+            const token = jwt.sign({ id: user.uid, email: user.email }, jwtSecret, { expiresIn: '1h' });
+            res.json({ message: 'Login successful', token, user: { id: user.uid, firstName: user.firstName, lastName: user.lastName, email: user.email } });
         } else {
-            res.json({
-                message: 'Protected Route',
-                authData
-            });
+            res.status(401).json({ message: 'Invalid credentials' });
         }
     });
 });
 
+app.get('/protected', verifyToken, (req, res) => {
+    res.json({
+        message: 'Protected Route',
+        authData: req.authData
+    });
+});
 
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
 
-    if (typeof bearerHeader !== 'undefined') {
+    if (bearerHeader) {
         const bearerToken = bearerHeader.split(' ')[1];
-        req.token = bearerToken;
-        next();
+        jwt.verify(bearerToken, jwtSecret, (err, authData) => {
+            if (err) {
+                return res.sendStatus(403); // Forbidden
+            }
+            req.authData = authData;
+            next();
+        });
     } else {
-        res.sendStatus(403);
+        res.sendStatus(403); // Forbidden
     }
 }
 

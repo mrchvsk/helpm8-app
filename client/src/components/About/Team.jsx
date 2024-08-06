@@ -1,16 +1,17 @@
 import image from '../../resources/profile_pfp.jpeg'
-import anonymous from '../../resources/anonymous.svg'
 
 export default function Team() {
 
     return (
-        <div className="max-w-7xl m-auto">
+        <div className="max-w-7xl m-auto bg-base-200 p-4 lg:p-6 shadow rounded-xl">
 
-            <h2 className="text-4xl p-9 font-semibold max-sm:text-center">Meet the team</h2>
+            <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">Meet the team</h2>
 
-            <div className='flex'>
+            {/* Cards */}
+            <div className='flex gap-24'>
 
-                <div className="max-w-sm mx-auto bg-base-100 rounded-lg shadow-md overflow-hidden">
+                {/* My card */}
+                <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1">
                     <img className="w-full h-48 object-cover" src={image} alt="Martin Mirchevski Profile Picture" />
                     <div className="p-6">
                         <h2 className="text-xl font-semibold text-primary">Martin Mirchevski</h2>
@@ -18,9 +19,10 @@ export default function Team() {
                     </div>
                 </div>
 
-                <div className="max-w-sm mx-auto bg-base-100 rounded-lg shadow-md overflow-hidden">
-                    <div style={{ backgroundColor: '#466fa0' }}>
-                        <svg className='fill-current' viewBox="0 0 512 512" xmlSpace="preserve">
+                {/* Looking for you card */}
+                <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1">
+                    <div className='w-full h-48 flex items-center justify-center' style={{ backgroundColor: '#466fa0' }}>
+                        <svg className='fill-current w-32 h-32' viewBox="0 0 512 512" xmlSpace="preserve">
                             <g>
                                 <path d="M179.335,226.703c22.109,0.219,37.484,21.172,44.047,27.047c1.578,1.828,3.875,2.984,6.469,2.984c4.766,0,8.641-3.859,8.641-8.641c0-2.656-1.219-5.031-3.125-6.609l0.016-0.031c-5-4.781-20.547-25.688-55.734-25.688s-43.609,26.406-44.5,29.594c-0.016,0.156-0.094,0.297-0.094,0.453c0,1.359,1.078,2.438,2.438,2.438c1.094,0,1.844-0.875,2.266-1.813C142.491,241.047,150.382,226.406,179.335,226.703z" />
                                 <path d="M331.554,216.813c-35.188,0-50.734,20.875-55.734,25.656l0.016,0.047c-1.906,1.578-3.125,3.922-3.125,6.594c0,4.781,3.875,8.641,8.625,8.641c2.609,0,4.938-1.156,6.516-2.969c6.531-5.891,21.906-26.828,44.016-27.063c28.953-0.281,36.844,14.344,39.578,19.75c0.422,0.922,1.172,1.797,2.281,1.797c1.344,0,2.422-1.094,2.422-2.422c0-0.172-0.063-0.328-0.094-0.469C375.163,243.188,366.741,216.813,331.554,216.813z" />
@@ -31,10 +33,20 @@ export default function Team() {
                             </g>
                         </svg>
                     </div>
+
                     <div className="p-6">
                         <h2 className="text-xl font-semibold text-primary">Looking for you</h2>
                         <p className="mt-3">Just me</p>
                     </div>
+                </div>
+
+                <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1">
+
+                    <a href="/">
+                        <p>Join the team</p>
+
+                    </a>
+
                 </div>
 
             </div>
