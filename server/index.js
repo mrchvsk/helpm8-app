@@ -217,17 +217,15 @@ function verifyToken(req, res, next) {
         const bearerToken = bearerHeader.split(' ')[1];
         jwt.verify(bearerToken, jwtSecret, (err, authData) => {
             if (err) {
-                return res.sendStatus(403); // Forbidden
+                return res.sendStatus(403); 
             }
             req.authData = authData;
             next();
         });
     } else {
-        res.sendStatus(403); // Forbidden
+        res.sendStatus(403); 
     }
 }
-
-
 
 //all offers fetching
 app.get('/offersPreview', (req, res) => {

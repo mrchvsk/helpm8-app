@@ -1,6 +1,18 @@
-import LoginForm from '../LoginForm'
+import React, { useState, useEffect } from 'react';
+import LoginForm from '../LoginForm';
 
 export default function HowWorks() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, []);
+
     return (
         <div className="flex flex-col lg:flex-row gap-4 xl:px-36 lg:p-9 bg-base-100 h-full">
             {/* Left side */}
@@ -41,15 +53,17 @@ export default function HowWorks() {
             {/* Right side */}
             <div className="flex flex-col flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
                 <div className='flex flex-col gap-4 md:flex-row h-full'>
-                    <div className='bg-base-200 rounded-xl flex-1'>
-                        <LoginForm />
-                    </div>
-
-                    <a href="/offers" className='flex-1'>
-                        <div className='bg-base-200 rounded-xl flex items-center justify-center h-full'>
-                            <p className='text-secondary text-5xl font-bold'>Find your offer</p>
+                    {isLoggedIn ? (
+                        <a href="/offers" className='flex-1'>
+                            <div className='bg-base-200 rounded-xl flex items-center justify-center h-full'>
+                                <p className='text-secondary text-5xl font-bold'>Find your offer</p>
+                            </div>
+                        </a>
+                    ) : (
+                        <div className='bg-base-200 rounded-xl flex-1'>
+                            <LoginForm />
                         </div>
-                    </a>
+                    )}
                 </div>
             </div>
         </div>

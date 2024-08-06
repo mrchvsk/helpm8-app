@@ -1,8 +1,8 @@
 export default function Use() {
     return (
-        <div className="max-w-7xl m-auto">
-            <h2 className="text-4xl p-9 font-semibold bg-base-200 max-sm:text-center">How does it work</h2>
-            <div className="flex flex-col md:flex-row justify-between p-4 md:p-9 bg-base-200 text-center mx-auto w-full">
+        <div className="max-w-7xl m-auto bg-base-100">
+            <h2 className="text-4xl p-9 font-semibold max-sm:text-center">How does it work</h2>
+            <div className="flex flex-col md:flex-row justify-between p-4 md:p-9 text-center mx-auto w-full">
                 <div className="min-w-72 flex-1 flex flex-col items-center mx-2 my-4 md:my-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     <h3 className="font-semibold text-xl mt-2">Post your offer</h3>

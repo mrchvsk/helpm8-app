@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'; // Use useHistory for navigation
+import { useHistory } from 'react-router-dom';
 
 export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const history = useHistory(); // Initialize useHistory
+    const history = useHistory(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +20,7 @@ export default function LoginForm() {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userFirstName', data.user.firstName); // Store firstName
+                localStorage.setItem('userFirstName', data.user.firstName);
                 history.push('/protected');
             } else {
                 alert(data.message || 'Error logging in');

@@ -4,7 +4,7 @@ import Use from '../components/Home/Use'
 
 export default function LandingPage() {
     return (
-        <div className='w-screen bg-base-200'>
+        <div className='w-screen'>
             <Hero />
             <Use />
             <OfferCarousel />

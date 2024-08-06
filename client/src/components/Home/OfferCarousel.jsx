@@ -14,7 +14,7 @@ export default function OfferCarousel() {
 
     return (
         <div className="max-w-7xl m-auto">
-            <div className="py-9 min-h-96 bg-base-200">
+            <div className="py-9 min-h-96">
                 <h2 className="p-3 pb-0 text-4xl font-semibold max-sm:text-center">Featured offers</h2>
 
                 <div className="carousel carousel-center w-full p-9 space-x-9">

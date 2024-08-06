@@ -3,8 +3,8 @@ export default function Card({ title = '', desc = '', participants = 0, particip
     const shortenedDesc = desc.length > maxLength ? `${desc.substring(0, maxLength)}...` : desc;
 
     return (
-        <div className="card min-w-96 sm:w-4/5 bg-base-100 shadow-xl">
-            <progress className="progress h-1 w-full" value={participants} max={participantsMax}></progress>
+        <div className="card min-w-96 w-3/5 md:w-48 bg-base-200 shadow-xl">
+            <progress className="progress h-2 w-full" value={participants} max={participantsMax}></progress>
             <div className="card-body">
                 <h2 className="card-title">{title}</h2>
                 <p className="text-justify">{shortenedDesc}</p>

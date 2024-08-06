@@ -8,7 +8,7 @@ export default function Team() {
             <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">Meet the team</h2>
 
             {/* Cards */}
-            <div className='flex gap-24'>
+            <div className='flex flex-col lg:flex-row gap-24 '>
 
                 {/* My card */}
                 <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1">
@@ -40,13 +40,10 @@ export default function Team() {
                     </div>
                 </div>
 
-                <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1">
-
-                    <a href="/">
-                        <p>Join the team</p>
-
+                <div className="max-w-sm mx-auto bg-base-300 rounded-lg shadow-md overflow-hidden flex-1 flex items-center justify-center">
+                    <a href="/" className="w-full h-full flex items-center justify-center p-6 text-center">
+                        <p className="text-xl font-bold text-primary">Join the team</p>
                     </a>
-
                 </div>
 
             </div>
