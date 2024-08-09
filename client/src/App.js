@@ -9,6 +9,7 @@ import Offers from './pages/Offers';
 import Footer from './components/Footer';
 import OfferDetails from './pages/OfferDetails';
 import Protected from './pages/Protected';
+import NewOffer from './pages/NewOffer';
 
 export default function App() {
     return (
@@ -29,6 +30,9 @@ export default function App() {
                 </Route>
                 <Route path="/offers/:id" exact>                    
                     <OfferDetails />                    
+                </Route>
+                <Route path="/offer" exact>
+                    <NewOffer />
                 </Route>
                 <Route path="/protected" exact>
                     <Protected />
