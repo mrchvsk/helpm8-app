@@ -227,7 +227,7 @@ function verifyToken(req, res, next) {
     }
 }
 
-//all offers fetching
+//preview offers fetching
 app.get('/offersPreview', (req, res) => {
     connection.connect(function (err) {
         if (err) throw err;
@@ -241,6 +241,7 @@ app.get('/offersPreview', (req, res) => {
     });
 });
 
+//all offers fetching
 app.get('/offers', (req, res) => {
     connection.connect(function (err) {
         if (err) throw err;
@@ -276,13 +277,14 @@ app.post('/newOffer', (req, res) => {
     });
 });
 
+//get specific order details
 app.get('/offers/:id', (req, res) => {
     const id = req.params.id;
 
     connection.connect(function (err) {
         if (err) { throw err; }
 
-        const sql = "SELECT * FROM offer WHERE id = ?";
+        const sql = "SELECT * FROM offer WHERE oid = ?";
         connection.query(sql, [id], function (err, result) {
             if (err) {
                 throw err;
@@ -290,6 +292,24 @@ app.get('/offers/:id', (req, res) => {
 
             res.json(result);
         });
+    });
+});
+
+app.put('/offers/:id/part', (req, res) => {
+    const oid = req.params.id;
+
+    const sql = 'UPDATE offer SET part = part + 1 WHERE oid = ?';
+
+    connection.query(sql, [oid], function (err, result) {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to update offer' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Offer not found' });
+        }
+
+        res.status(200).json({ message: 'Participation successful, part updated' });
     });
 });
 

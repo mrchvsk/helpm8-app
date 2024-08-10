@@ -76,6 +76,7 @@ export default function Offers() {
                     {filteredOffers.map(offer => (
                         <Card
                             key={offer.oid}
+                            oid={offer.oid}
                             title={offer.title}
                             desc={offer.description}
                             participants={offer.part}
