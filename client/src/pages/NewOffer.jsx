@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import Fail from '../components/Alerts/Fail';
+import Success from '../components/Alerts/Success'
 
 export default function NewOffer() {
-    const [uid, setUid] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
@@ -13,16 +16,19 @@ export default function NewOffer() {
     const [skillsRequired, setSkillsRequired] = useState(false);
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [partMax, setPartMax] = useState('');
 
     const [isFormComplete, setIsFormComplete] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showError, setShowError] = useState(false);
+
+    const history = useHistory();
 
     useEffect(() => {
-        if (title && description && category && country && city && dateAndTime && budget && frequency && email && phone) {
-            setIsFormComplete(true);
-        } else {
-            setIsFormComplete(false);
-        }
-    }, [title, description, category, country, dateAndTime, budget, frequency, email, phone]);
+        const allFieldsComplete =
+            title && description && category && country && city && dateAndTime && budget && frequency && email && phone && partMax;
+        setIsFormComplete(allFieldsComplete);
+    }, [title, description, category, country, city, dateAndTime, budget, frequency, email, phone, partMax]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -31,22 +37,22 @@ export default function NewOffer() {
             description,
             category,
             country,
+            city,
             dateAndTime,
             budget,
             frequency,
             skillsRequired,
             email,
             phone,
+            partMax
         };
-        console.log('New Offer:', offer);
         
-        /*
-        fetch('/register', {
+        fetch('/newOffer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(offer)
         })
             .then(response => response.json())
             .then(data => {
@@ -54,30 +60,26 @@ export default function NewOffer() {
                     setShowError(true);
                 } else {
                     setShowSuccess(true);
-                    setFormData({
-                        name: '',
-                        surname: '',
-                        email: '',
-                        password: '',
-                        repeatPassword: '',
-                        country: '',
-                        city: ''
-                    });
-                    setSelectedCountry('');
-                    setCities([]);
+                    setTimeout(() => {
+                        history.push('/offers'); 
+                    }, 2000);
                 }
             })
             .catch((error) => {
                 setShowError(true);
             });
-        */
     };
 
     return (
         <div className='flex h-screen justify-center'>
-            <form onSubmit={handleSubmit} className="w-scrren md:w-1/2 space-y-4 m-auto p-8 bg-base-200 rounded-xl">
+            <form onSubmit={handleSubmit} className="w-screen md:w-1/2 space-y-4 m-auto p-8 bg-base-200 rounded-xl">
 
                 <h1 className="text-3xl font-bold text-center">Create an offer</h1>
+
+                <div>
+                    {showError && <Fail message="Offer failed to upload. Please try again later..." />}
+                    {showSuccess && <Success message="Offer uploaded successfully. Please return to offers..." />}
+                </div>
 
                 <label className="input input-bordered flex items-center gap-2">
                     Title
@@ -103,31 +105,30 @@ export default function NewOffer() {
                 </label>
                 <div className="flex flex-col xl:flex-row gap-2">
                     <select
-                        className="input input-bordered flex-1"
+                        className="input input-bordered flex grow items-center gap-2"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         required
                     >
                         <option value="" disabled>Select a category</option>
-                        <option value="Household Chores">Household Chores</option>
-                        <option value="Gardening">Gardening</option>
-                        <option value="Moving Help">Moving Help</option>
-                        <option value="Tutoring">Tutoring</option>
-                        <option value="Pet Care">Pet Care</option>
-                        <option value="Others">Others</option>
+                        <option value="Charity">Charity</option>
+                        <option value="Moving">Moving</option>
+                        <option value="Academia">Academia</option>
+                        <option value="Driving">Driving</option>
+                        <option value="Other">Other</option>
                     </select>
                     <select
-                        className="input input-bordered flex-1"
+                        className="input input-bordered flex grow items-center gap-2"
                         value={frequency}
                         onChange={(e) => setFrequency(e.target.value)}
                         required
                     >
                         <option value="" disabled>Select frequency</option>
-                        <option value="One-Time">One-Time</option>
+                        <option value="Once">Once</option>
                         <option value="Weekly">Weekly</option>
                         <option value="Monthly">Monthly</option>
                     </select>
-                    <label className="input input-bordered flex flex-1 items-center gap-2">
+                    <label className="input input-bordered flex grow items-center gap-2">
                         Skills Required
                         <input
                             type="checkbox"
@@ -154,8 +155,8 @@ export default function NewOffer() {
                             type="text"
                             className="grow"
                             placeholder="Enter your city"
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
                             required
                         />
                     </label>
@@ -170,17 +171,30 @@ export default function NewOffer() {
                         required
                     />
                 </label>
-                <label className="input input-bordered flex items-center gap-2">
-                    Budget
-                    <input
-                        type="number"
-                        className="grow"
-                        placeholder="Enter your budget"
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value)}
-                        required
-                    />
-                </label>
+                <div className='flex flex-col xl:flex-row gap-2 w-full'>
+                    <label className="input input-bordered flex items-center gap-2">
+                        Budget
+                        <input
+                            type="number"
+                            className="grow w-full"
+                            placeholder="Enter your budget"
+                            value={budget}
+                            onChange={(e) => setBudget(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                        Maximum Participants
+                        <input
+                            type="number"
+                            className="grow"
+                            placeholder="Enter maximum amount of participants"
+                            value={partMax}
+                            onChange={(e) => setPartMax(e.target.value)}
+                            required
+                        />
+                    </label>
+                </div>
                 <div className='flex flex-col lg:flex-row gap-2'>
                     <label className="input input-bordered flex grow items-center gap-2">
                         Email

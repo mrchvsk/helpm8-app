@@ -31,17 +31,17 @@ export default function Faq() {
     };
 
     return (
-        <div className="min-h-fit py-12">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 bg-base-300 rounded-xl">
-                <h2 className="text-3xl font-extrabold text-base-500 mb-6">Frequently Asked Questions</h2>
+        <div className="py-10 max-w-screen-xl m-auto px-6">
+            <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 bg-base-200 rounded-xl">
+                <h2 className="text-3xl lg:text-5xl font-extrabold mb-6">Frequently Asked Questions</h2>
                 <div className="space-y-6">
                     {faqs.map((faq, index) => (
-                        <div key={index} className="bg-base-200 rounded-lg shadow-md">
+                        <div key={index} className="bg-base-300 rounded-lg shadow-md">
                             <div
                                 className="p-6 cursor-pointer"
                                 onClick={() => toggleFAQ(index)}
                             >
-                                <h3 className="text-xl font-semibold text-base-500">{faq.question}</h3>
+                                <h3 className="text-2xl font-semibold text-base-500">{faq.question}</h3>
                             </div>
                             {expandedIndex === index && (
                                 <div className="px-6 pb-6">

@@ -60,7 +60,6 @@ export default function OfferDetails() {
 
     return (
         <div className='flex flex-col h-screen justify-center'>
-            ()
             <div className="max-w-4xl h-fit mx-auto bg-base-200 shadow-lg rounded-lg p-6">
                 <div className="border-b pb-4 mb-4">
                     <h1 className="text-3xl font-semibold">{offer.title}</h1>

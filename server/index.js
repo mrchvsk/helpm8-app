@@ -257,21 +257,17 @@ app.get('/offers', (req, res) => {
 
 // new offer
 app.post('/newOffer', (req, res) => {
-    const { uid, title, description, category, country, city, date, budget, frequency, skillsReq, part, partMax } = req.body;
-
-    connection.connect(function (err) {
-        if (err) throw err;
-    });
+    const { uid, title, description, category, country, city, date, budget, frequency, skillsReq, partMax } = req.body;
 
     const sql = `
-        INSERT INTO offer (uid, title, description, category, country, city, date, budget, frequency, skillsReq, part, partMax likes, dislikes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 0, 0 )
+        INSERT INTO offer (uid, title, description, category, country, city, date, budget, frequency, skillsReq, part, partMax, likes, dislikes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 0, 0)
     `;
 
-    connection.query(sql, [title, description, category, location, dateAndTime, budget, frequency, skillsRequired, email, phone], function (err, result) {
+    connection.query(sql, [uid, title, description, category, country, city, date, budget, frequency, skillsReq, partMax], (err, result) => {
         if (err) {
-            res.status(500).json({ error: 'Failed to insert new offer' });
-            throw err;
+            console.error('Failed to insert new offer:', err);
+            return res.status(500).json({ error: 'Failed to insert new offer' });
         }
         res.status(201).json({ message: 'New offer created successfully', offerId: result.insertId });
     });

@@ -8,12 +8,16 @@ export default function Header() {
     const token = localStorage.getItem('token');
     const userFirstName = localStorage.getItem('userFirstName'); 
 
-    const handleJoinOrProtected = () => {
+    const handleProfile = () => {
         if (token) {
             history.push('/protected'); 
         } else {
             history.push('/register');
         }
+    };
+
+    const handleCreateOffer = () => {
+        history.push('/offer');
     };
 
     return (
@@ -44,9 +48,14 @@ export default function Header() {
             </div>
             <div className="flex gap-1 navbar-end">
                 {token ? (
-                    <button onClick={handleJoinOrProtected} className="btn">
-                        {userFirstName}
-                    </button>
+                    <div className='flex gap-2'>
+                        <button onClick={handleProfile} className='btn'>
+                            {userFirstName}
+                        </button>
+                        <button onClick={handleCreateOffer} className='btn bg-primary text-white'>
+                            Create Offer
+                        </button>
+                    </div>
                 ) : (
                     <a href='/register' className="btn">Join now</a>
                 )}

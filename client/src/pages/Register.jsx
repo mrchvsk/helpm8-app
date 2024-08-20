@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 
 export default function Register() {
     const [selectedCountry, setSelectedCountry] = useState('');
@@ -15,6 +16,8 @@ export default function Register() {
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
+
+    const history = useHistory(); 
 
     const countryCityMap = {
         Germany: ['Berlin', 'Munich', 'Frankfurt'],
@@ -64,6 +67,7 @@ export default function Register() {
                     });
                     setSelectedCountry('');
                     setCities([]);
+                    history.push('/');
                 }
             })
             .catch((error) => {

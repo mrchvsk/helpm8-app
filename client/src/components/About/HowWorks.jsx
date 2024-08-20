@@ -14,9 +14,9 @@ export default function HowWorks() {
     }, []);
 
     return (
-        <div className="flex flex-col lg:flex-row gap-4 xl:px-36 lg:p-9 bg-base-100 h-full">
+        <div className="flex flex-col lg:flex-row gap-4 bg-base-100 max-w-screen-xl m-auto">
             {/* Left side */}
-            <div className="flex flex-col flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
+            <div className="flex flex-col w-2/3 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
                 <p className="text-secondary font-semibold text-center lg:text-left">Get Started</p>
                 <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">How does the platform work?</h2>
 
@@ -51,7 +51,7 @@ export default function HowWorks() {
             </div>
 
             {/* Right side */}
-            <div className="flex flex-col flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
+            <div className="flex flex-col w-1/3 bg-base-200 rounded-xl p-4 lg:p-6 shadow">
                 <div className='flex flex-col gap-4 md:flex-row h-full'>
                     {isLoggedIn ? (
                         <a href="/offers" className='flex-1'>

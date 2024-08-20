@@ -8,7 +8,6 @@ export default function About() {
         <>
             <Mission />
             <HowWorks />
-            <Team />
             <Faq />
         </>
     );

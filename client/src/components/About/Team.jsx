@@ -3,7 +3,7 @@ import image from '../../resources/profile_pfp.jpeg'
 export default function Team() {
 
     return (
-        <div className="max-w-7xl m-auto bg-base-200 p-4 lg:p-6 shadow rounded-xl">
+        <div className="max-w-screen-xl m-auto bg-base-200 p-4 lg:p-6 shadow rounded-xl px-6">
 
             <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">Meet the team</h2>
 
