@@ -48,6 +48,8 @@ connection.connect((err) => {
     });
 });
 
+/* 
+//OLD SETUP WITHOUT PARTICIPATION
 function setup() {
     const createDb = `CREATE DATABASE helpm8`;
     connection.query(createDb, (err) => {
@@ -103,6 +105,110 @@ function setup() {
                 );
             `;
             connection.query(createOffer, (err) => {
+                if (err) {
+                    console.error('Error creating table:', err);
+                    return;
+                }
+            });
+
+            //populating user table
+            const users = require('./dbData/userData');
+            const insertUser = `INSERT INTO user (firstName, lastName, email, country, city, password) VALUES ?`;
+            const userValues = users.map(user => [user.firstName, user.lastName, user.email, user.country, user.city, user.password]);
+            connection.query(insertUser, [userValues], (err) => {
+                if (err) {
+                    return;
+                }
+            });
+
+            //populating offer table
+            const offers = require('./dbData/offerData');
+            const insertOffer = `INSERT INTO offer (uid, title, description, category, country, city, date, budget, frequency, skillsReq, likes, dislikes, part, partMax) VALUES ?`;
+            const offerValues = offers.map(offer => [offer.uid, offer.title, offer.description, offer.category, offer.country, offer.city, offer.date, offer.budget, offer.frequency, offer.skillsReq, offer.likes, offer.dislikes, offer.part, offer.partMax]);
+            connection.query(insertOffer, [offerValues], (err) => {
+                if (err) {
+                    return;
+                }
+            });
+        });
+    });
+}
+*/
+
+//NEW SETUP WITH PARTICIPATION
+function setup() {
+    const createDb = `CREATE DATABASE helpm8`;
+    connection.query(createDb, (err) => {
+        if (err) {
+            return;
+        }
+
+        connection.changeUser({ database: 'helpm8' }, (err) => {
+            if (err) {
+                return;
+            }
+
+            //creating user table
+            const createUser = `
+                CREATE TABLE user (
+                    uid INT AUTO_INCREMENT PRIMARY KEY,
+                    firstName VARCHAR(255),
+                    lastName VARCHAR(255),
+                    email VARCHAR(255),
+                    country VARCHAR(255),
+                    city VARCHAR(255),
+                    password VARCHAR(255),
+                    joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            `;
+            connection.query(createUser, (err) => {
+                if (err) {
+                    console.error('Error creating table:', err);
+                    return;
+                }
+            });
+
+            //creating offer table
+            const createOffer = `
+                CREATE TABLE offer (
+                    oid INT AUTO_INCREMENT PRIMARY KEY,
+                    uid INT,
+                    title VARCHAR(255),
+                    description TEXT,
+                    category VARCHAR(255),
+                    country VARCHAR(100),
+                    city VARCHAR(100),
+                    date DATE,
+                    budget INT,
+                    frequency VARCHAR(30),
+                    skillsReq BOOLEAN,
+                    likes INT,
+                    dislikes INT,
+                    part INT,
+                    partMax INT,
+                    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (uid) REFERENCES user(uid)
+                );
+            `;
+            connection.query(createOffer, (err) => {
+                if (err) {
+                    console.error('Error creating table:', err);
+                    return;
+                }
+            });
+
+            //creating participation table
+            const createParticipation = `
+                CREATE TABLE participation (
+                    pid INT AUTO_INCREMENT PRIMARY KEY,
+                    uid INT,
+                    oid INT,
+                    participation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (uid) REFERENCES user(uid),
+                    FOREIGN KEY (oid) REFERENCES offer(oid)
+                );
+            `;
+            connection.query(createParticipation, (err) => {
                 if (err) {
                     console.error('Error creating table:', err);
                     return;
@@ -195,7 +301,7 @@ app.post('/login', (req, res) => {
 
         if (results.length > 0) {
             const user = results[0];
-            const token = jwt.sign({ id: user.uid, email: user.email }, jwtSecret, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.uid, email: user.email }, jwtSecret);
             res.json({ message: 'Login successful', token, user: { id: user.uid, firstName: user.firstName, lastName: user.lastName, email: user.email } });
         } else {
             res.status(401).json({ message: 'Invalid credentials' });
@@ -291,21 +397,52 @@ app.get('/offers/:id', (req, res) => {
     });
 });
 
-app.put('/offers/:id/part', (req, res) => {
-    const oid = req.params.id;
+// updated
+app.post('/offers/:oid/participate', (req, res) => {
+    const { uid } = req.body;  
+    const { oid } = req.params;
 
-    const sql = 'UPDATE offer SET part = part + 1 WHERE oid = ?';
+    if (!uid || !oid) {
+        return res.status(400).json({ error: 'User ID and Offer ID are required' });
+    }
 
-    connection.query(sql, [oid], function (err, result) {
+    const insertParticipation = `
+        INSERT INTO participation (uid, oid) 
+        VALUES (?, ?);
+    `;
+
+    connection.query(insertParticipation, [uid, oid], (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Failed to update offer' });
+            console.error('Error inserting participation:', err);
+            return res.status(500).json({ error: 'Failed to record participation' });
         }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Offer not found' });
-        }
+        res.status(201).json({ message: 'Participation recorded successfully' });
+    });
+});
 
-        res.status(200).json({ message: 'Participation successful, part updated' });
+//likes and dislikes logic
+app.put('/offers/:id/likeDislike', (req, res) => {
+    const { id } = req.params;
+    const { action } = req.body;
+
+    let likeNumber = 0;
+    let dislikeNumber = 0;
+
+    if (action === 'like') {
+        likeNumber = 1;
+    } else if (action === 'dislike') {
+        dislikeNumber = 1;
+    }
+
+    const sql = `UPDATE offer SET likes = likes + ?, dislikes = dislikes + ? WHERE oid = ?; `;
+
+    connection.query(sql, [likeNumber, dislikeNumber, id], (err) => {
+        if (err) {
+            console.error('Failed to update likes/dislikes:', err);
+            return res.status(500).json({ error: 'Failed to update likes/dislikes' });
+        }
+        res.status(200).json({ message: 'Action completed successfully' });
     });
 });
 

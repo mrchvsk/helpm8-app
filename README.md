@@ -1,10 +1,14 @@
 # helpm8
 
-To start working on the project you need to clone the repository from Github.
+To start working on the project you can either: 
+  - clone the repository from Github
+  - use the ZIP file attached
 
 # Client Setup
 1. Navigate to the client directory:
  - cd client
+
+IMPORTANT: Steps 2 and 3 are mandotory only if pulling the repo from Github.
 
 2. Install node modules:
  - npm install

@@ -1,19 +1,47 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+function isTokenExpired(token) {
+    if (!token) return true;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const currentTime = Date.now() / 1000;
+
+    return payload.exp < currentTime;
+}
+
+function handleLogout() {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+}
 
 export default function Protected() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const userFirstName = localStorage.getItem('userFirstName'); // Retrieve firstName from localStorage
+    const userFirstName = localStorage.getItem('userFirstName');
+    const history = useHistory();
 
     useEffect(() => {
         const fetchData = async () => {
             const token = localStorage.getItem('token');
+
+            if (!token || isTokenExpired(token)) {
+                handleLogout();
+                return;
+            }
+
             try {
                 const response = await fetch('/protected', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
+
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
                 const result = await response.json();
                 setData(result);
             } catch (error) {
@@ -25,7 +53,7 @@ export default function Protected() {
         };
 
         fetchData();
-    }, []);
+    }, [history]);
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">

@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import OfferDetails from './pages/OfferDetails';
 import Protected from './pages/Protected';
 import NewOffer from './pages/NewOffer';
+import Login from './pages/Login';
 
 export default function App() {
     return (
@@ -24,6 +25,9 @@ export default function App() {
                 </Route>
                 <Route path="/register" exact>                    
                     <Register />                    
+                </Route>
+                <Route path="/login" exact>
+                    <Login />
                 </Route>
                 <Route path="/offers" exact>                    
                     <Offers />                    
