@@ -8,18 +8,20 @@ To start working on the project you can either:
 1. Navigate to the client directory:
  - cd client
 
-IMPORTANT: Steps 2 and 3 are mandotory only if pulling the repo from Github.
+IMPORTANT: Steps 2 and 3 are mandotory only if cloning the repo from Github.
 
 2. Install node modules:
  - npm install
 
-3. Install Tailwind CSS and DaisyUI:
- - npm install tailwindcss daisyui
+3. Install packages:
+  - npm install jsonwebtoken axios
+  - npm install -D tailwindcss
+  - npm i -D daisyui@latest
 
  # Server Setup
  1. Navigate to the server directory:
   - cd ../server
-  - npm install
+  - npm init
   - npm install express mysql2 cors jsonwebtoken
 
 # Application start
