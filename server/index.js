@@ -398,26 +398,25 @@ app.get('/offers/:id', (req, res) => {
 });
 
 // updated
-app.post('/offers/:oid/participate', (req, res) => {
-    const { uid } = req.body;  
-    const { oid } = req.params;
+app.post('/participate', (req, res) => {
+    const { uid, oid } = req.body;
 
-    if (!uid || !oid) {
-        return res.status(400).json({ error: 'User ID and Offer ID are required' });
-    }
-
-    const insertParticipation = `
-        INSERT INTO participation (uid, oid) 
-        VALUES (?, ?);
-    `;
+    const insertParticipation = `INSERT INTO participation (uid, oid) VALUES (?, ?);`;
 
     connection.query(insertParticipation, [uid, oid], (err, results) => {
         if (err) {
-            console.error('Error inserting participation:', err);
             return res.status(500).json({ error: 'Failed to record participation' });
         }
 
-        res.status(201).json({ message: 'Participation recorded successfully' });
+        const updateParticipators = `UPDATE offer SET part = part + 1 WHERE oid = ?;`;
+
+        connection.query(updateParticipators, [oid], (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: 'Failed to update part count' });
+            }
+
+            res.status(201).json({ message: 'Success' });
+        });
     });
 });
 

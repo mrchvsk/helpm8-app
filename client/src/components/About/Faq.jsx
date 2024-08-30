@@ -31,7 +31,7 @@ export default function Faq() {
     };
 
     return (
-        <div className="py-10 max-w-screen-xl m-auto px-6">
+        <div className="py-10 max-w-screen-xl m-auto">
             <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 bg-base-200 rounded-xl">
                 <h2 className="text-3xl lg:text-5xl font-extrabold mb-6">Frequently Asked Questions</h2>
                 <div className="space-y-6">

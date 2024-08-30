@@ -1,8 +1,9 @@
 export default function Mission() {
     return (
-        <div className="flex flex-col max-w-screen-xl m-auto lg:flex-row gap-4 py-10 bg-base-100 px-6">
-            {/* Left side */}
-            <div className="flex flex-col  lg:flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow h-full">
+        <div className="flex flex-col max-w-screen-xl m-auto lg:flex-row gap-4 py-10 bg-base-100">
+            
+            {/* left side */}
+            <div className="flex flex-col lg:flex-1 bg-base-200 rounded-xl p-4 lg:p-6 shadow h-full">
                 <p className="text-secondary font-semibold text-center lg:text-left">How It Started</p>
                 <h2 className="text-3xl lg:text-5xl font-bold mt-4 mb-6 text-center lg:text-left">
                     Our Mission is <br /> Connecting Individuals <br /> Needing Assistance
@@ -12,13 +13,12 @@ export default function Mission() {
                 </p>
             </div>
 
-            {/* Right side */}
-            <div className="flex flex-col flex-1 h-full">
-                {/* Top side */}
-                <div>
-                    <img className="w-full h-48 lg:h-full rounded-xl object-cover grayscale shadow" src="https://appmsmunifyprod.blob.core.windows.net/docs/files/institution/edf23d63-1f99-4d0c-8cf0-fbbc996880e7.jpg" alt="Mission Image" />
-                </div>
+            {/* right side */}
+            <div className="flex flex-col flex-1">
 
+                <div className="h-full">
+                    <img className="w-full h-full rounded-xl object-cover grayscale shadow" src="https://appmsmunifyprod.blob.core.windows.net/docs/files/institution/edf23d63-1f99-4d0c-8cf0-fbbc996880e7.jpg" alt="Mission Image" />
+                </div>
             </div>
         </div>
     );

@@ -49,12 +49,9 @@ export default function Header() {
             <div className="flex gap-1 navbar-end">
                 {token ? (
                     <div className='flex gap-2'>
-                        <button onClick={handleProfile} className='btn'>
-                            {userFirstName}
-                        </button>
-                        <button onClick={handleCreateOffer} className='btn bg-primary text-white'>
-                            Create Offer
-                        </button>
+                        <button onClick={handleProfile} className='btn'>{userFirstName}</button>
+                        
+                        <button onClick={handleCreateOffer} className='btn bg-primary text-white'>Create Offer</button>
                     </div>
                 ) : (
                     <a href='/register' className="btn">Join now</a>

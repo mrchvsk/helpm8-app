@@ -21,7 +21,7 @@ export default function LoginForm() {
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userFirstName', data.user.firstName);
-                localStorage.setItem('userFirstName', data.user.id);
+                localStorage.setItem('uid', data.user.id);
                 history.push('/protected');
             } else {
                 alert(data.message || 'Error logging in');

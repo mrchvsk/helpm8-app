@@ -71,7 +71,7 @@ export default function OfferDetails() {
 
     const handleParticipate = async () => {
         try {
-            const uid = 1; // from storage
+            const uid = localStorage.getItem('uid');
             const response = await fetch(`/participate`, {
                 method: 'POST',
                 headers: {
@@ -85,6 +85,7 @@ export default function OfferDetails() {
             }
 
             alert("Participation recorded successfully!");
+            window.location.reload();
         } catch (err) {
             console.error('Error:', err);
             alert("There was an error recording your participation. Please try again.");
@@ -98,6 +99,8 @@ export default function OfferDetails() {
     if (!offer) {
         return <div className=" text-center mt-4">Loading...</div>;
     }
+
+    const isAvailable = offer.part >= offer.partMax;
 
     return (
         <div className='flex flex-col h-screen justify-center'>
@@ -140,7 +143,7 @@ export default function OfferDetails() {
                         </div>
 
                         <div className="self justify-end">
-                            <button className="btn btn-primary text-white" onClick={handleParticipate}>Participate</button>
+                            <button className="btn btn-primary text-white" onClick={handleParticipate} disabled={isAvailable}>Participate</button>
                         </div>
 
                     </div>
